@@ -14,7 +14,7 @@ A curated list of WebAssembly Component tooling and ready-to-use components.
 - [Resources](#resources)
 	- [Tutorials](#tutorials)
 
-> [!Note] Under Development
+> [!NOTE] Under Development
 > There is a lot of work happening on Wasm Components right now, and I *know* I’m forgetting to include a lot of helpful projects, resources, and links.
 
 ## What are Wasm Components?
