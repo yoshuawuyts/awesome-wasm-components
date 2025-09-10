@@ -2,6 +2,9 @@
 
 A curated list of WebAssembly Component tooling and ready-to-use components.
 
+> [!NOTE]
+> There is a lot of work happening on Wasm Components right now, and I *know* I’m forgetting to include a lot of helpful projects, resources, and links.
+
 - [Tools](#tools)
 	- [Programming Language Support](#programming-language-support)
 	- [Bindings Generators](#bindings-generators)
@@ -13,9 +16,6 @@ A curated list of WebAssembly Component tooling and ready-to-use components.
 	- [Interfaces](#interfaces)
 - [Resources](#resources)
 	- [Tutorials](#tutorials)
-
-> [!NOTE]
-> There is a lot of work happening on Wasm Components right now, and I *know* I’m forgetting to include a lot of helpful projects, resources, and links.
 
 ## What are Wasm Components?
 
@@ -30,7 +30,7 @@ platforms, here is how they compare:
 | --------------------------------- | ------------------------------------ | --------------------------------- | --------------------- | ------------------------------------------ |
 | **Instruction Format**            | [Core Wasm]                          | x86, ARM, etc.                    | x86 or ARM            | ARM                                        |
 | **Container Format**              | [Wasm Components]                    | [ELF]                             | [PE]                  | [Mach-O]                                   |
-| **Interface Definition Language** | [Wasm Interface Types][WIT] (WIT)    | C header files                    | [Microsoft IDL][MIDL] | (Objective-)C header files + Swift Modules |
+| **Interface Definition Language** | [Wasm Interface Types][WIT] (WIT)    | C header files                    | [Windows Metadata][WINMD] (WinMD) | (Objective-)C header files + Swift Modules |
 | **System Interfaces**             | [Wasm System Interface][WASI] (WASI) | [POSIX] + [Linux User-Space APIs] | [Win32] + [UWP]       | [POSIX] + Darwin Syscalls                  |
 
 [Core Wasm]: https://webassembly.github.io/spec/core/
@@ -45,8 +45,7 @@ platforms, here is how they compare:
 [WIT]: https://component-model.bytecodealliance.org/design/wit.html
 [Wasm Components]: https://github.com/WebAssembly/component-model
 [Win32]: https://en.wikipedia.org/wiki/Windows_API
-
-[^wasi]: WASI 0.1 predates Wasm Components and relied on the C ABI. WASI 0.2 and later make use of Wasm Components. This removes the need for plaftform-specific tools such as [wasm-bindgen](https://github.com/wasm-bindgen/wasm-bindgen).
+[WINMD]: https://learn.microsoft.com/en-us/uwp/winrt-cref/winmd-files
 
 ## Tools
 
@@ -56,7 +55,7 @@ These languages can be compiled to Wasm Components. Some languages have first-pa
 
 | Language                | Name                                                                                                   | WASI Version | Maintained By     | Notes                                                                                                                                                                                               |
 | ----------------------- | ------------------------------------------------------------------------------------------------------ | ------------ | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| C and C++               | [`wasi-libc`](https://github.com/WebAssembly/wasi-libc)                                                | 0.2 + 0.3    | Bytecode Alliance | 0.3 is in-progress                                                                                                                                                                                  |
+| C and C++               | [`wasi-sdk`](https://github.com/WebAssembly/wasi-sdk)                                                  | 0.2 + 0.3    | W3C Wasm CG       | 0.3 is in-progress                                                                                                                                                                                  |
 | C#                      | [`componentize-dotnet`](https://github.com/bytecodealliance/componentize-dotnet)                       | 0.2          | Bytecode Alliance |                                                                                                                                                                                                     |
 | Go                      | [`go-modules`](https://github.com/bytecodealliance/go-modules)                                         | 0.2          | Bytecode Alliance |                                                                                                                                                                                                     |
 | Java                    | [`graal`](https://github.com/oracle/graal)                                                             | -            | Oracle            | Planned - [Tracking Issue](https://github.com/oracle/graal/issues/9762), [Roadmap](https://github.com/orgs/oracle/projects/21/views/1)                                                              |
@@ -88,28 +87,28 @@ bindings generators that can generate those calls for you.
 
 Host runtimes can take Wasm Components and execute them. Runtimes can either be loaded as language-native libraries, run as standalone binaries, or be hosted by third party providers:
 
-| Kind               | Name                                                                | WASI Version | Maintained By          | Notes                                                                                              |
-| ------------------ | ------------------------------------------------------------------- | ------------ | ---------------------- | -------------------------------------------------------------------------------------------------- |
-| Build System       | [MS Build](https://github.com/dotnet/msbuild)                       | 0.2          | Microsoft              | [Proposed](https://github.com/dotnet/msbuild/blob/main/documentation/specs/proposed/Wasm-tasks.md) |
-| C Library          | [Wasmtime crate](https://crates.io/crates/wasmtime)                 | 0.2 + 0.3    | Bytecode Alliance      | 0.3 support in-progress                                                                            |
-| Command Line       | [Wasmtime](https://wasmtime.dev)                                    | 0.2 + 0.3    | Bytecode Alliance      | 0.3 support in-progress                                                                            |
-| Durable Compute    | [Golem](https://github.com/golemcloud/golem)                        | 0.2          | Golem Cloud            |                                                                                                    |
-| Durable Compute    | [Obelisk](https://github.com/obeli-sk/obelisk)                      | 0.2          | Obelisk                |                                                                                                    |
-| Edge Compute       | [Edgee](https://www.edgee.cloud/)                                   | 0.2          | Edgee                  |                                                                                                    |
-| Edge Compute       | [Fastly Edge Compute](https://www.fastly.com/products/edge-compute) | 0.2          | Fastly                 |                                                                                                    |
-| Editor             | [VS Code](https://vscode.dev)                                       | 0.2          | Microsoft              | [Plugin system](https://code.visualstudio.com/blogs/2024/05/08/wasm)                               |
-| Editor             | [Zed](https://zed.dev)                                              | 0.2          | Zed Industries         | [Plugin system](https://github.com/zed-industries/zed/tree/main/crates/extension_api)              |
-| Game Backend       | [SpacetimeDB](https://spacetimedb.com/)                             | 0.2          | Clockwork Laboratories |                                                                                                    |
-| Go Library         | [Gravity](https://github.com/arcjet/gravity)                        | 0.2          | Arcjet                 | In-progress                                                                                        |
-| Serverless Runtime | [Spin](https://spinframework.dev/)                                  | 0.2          | CNCF                   |                                                                                                    |
-| Hypervisor Guest   | [Hyperlight Wasm](https://github.com/hyperlight-dev/hyperlight-wasm)                                                 | 0.2          | CNCF                   | 0.2 async APIs in-progress                                                                         |
-| Kubernetes         | [SpinKube](https://www.spinkube.dev/)                                                        | 0.2          | CNCF                   |                                                                                                    |
-| Kubernetes         | [WasmCloud](https://wasmcloud.com/)                                                       | 0.2          | CNCF                   |                                                                                                    |
-| MCP Server         | [WasMCP](https://github.com/wasmcp/wasmcp)                          | 0.2          | WasMCP                 |                                                                                                    |
-| MCP Server         | [Wassette](https://github.com/microsoft/wassette)                                                        | 0.2          | Microsoft              |                                                                                                    |
-| Node.js + Web      | [Jco](https://github.com/bytecodealliance/jco)                                                             | 0.2 + 0.3    | Bytecode Alliance      | 0.3 support in-progress                                                                            |
-| Rust Library       | [Wasmtime crate](https://crates.io/crates/wasmtime)                 | 0.2 + 0.3    | Bytecode Alliance      | 0.3 support in-progress                                                                            |
-| Web Framework      | [Leptos](https://leptos.dev)                                        | 0.2          | Leptos                 | [Plugin system](https://benw.is/posts/plugins-with-rust-and-wasi)                                  |
+| Kind               | Name                                                                 | WASI Version | Maintained By          | Notes                                                                                              |
+| ------------------ | -------------------------------------------------------------------- | ------------ | ---------------------- | -------------------------------------------------------------------------------------------------- |
+| Build System       | [MS Build](https://github.com/dotnet/msbuild)                        | 0.2          | Microsoft              | [Proposed](https://github.com/dotnet/msbuild/blob/main/documentation/specs/proposed/Wasm-tasks.md) |
+| C Library          | [Wasmtime crate](https://crates.io/crates/wasmtime)                  | 0.2 + 0.3    | Bytecode Alliance      | 0.3 support in-progress                                                                            |
+| Command Line       | [Wasmtime](https://wasmtime.dev)                                     | 0.2 + 0.3    | Bytecode Alliance      | 0.3 support in-progress                                                                            |
+| Durable Compute    | [Golem](https://github.com/golemcloud/golem)                         | 0.2          | Golem Cloud            |                                                                                                    |
+| Durable Compute    | [Obelisk](https://github.com/obeli-sk/obelisk)                       | 0.2          | Obelisk                |                                                                                                    |
+| Edge Compute       | [Edgee](https://www.edgee.cloud/)                                    | 0.2          | Edgee                  |                                                                                                    |
+| Edge Compute       | [Fastly Edge Compute](https://www.fastly.com/products/edge-compute)  | 0.2          | Fastly                 |                                                                                                    |
+| Editor             | [VS Code](https://vscode.dev)                                        | 0.2          | Microsoft              | [Plugin system](https://code.visualstudio.com/blogs/2024/05/08/wasm)                               |
+| Editor             | [Zed](https://zed.dev)                                               | 0.2          | Zed Industries         | [Plugin system](https://github.com/zed-industries/zed/tree/main/crates/extension_api)              |
+| Game Backend       | [SpacetimeDB](https://spacetimedb.com/)                              | 0.2          | Clockwork Laboratories |                                                                                                    |
+| Go Library         | [Gravity](https://github.com/arcjet/gravity)                         | 0.2          | Arcjet                 | In-progress                                                                                        |
+| Serverless Runtime | [Spin](https://spinframework.dev/)                                   | 0.2          | CNCF                   |                                                                                                    |
+| Hypervisor Guest   | [Hyperlight Wasm](https://github.com/hyperlight-dev/hyperlight-wasm) | 0.2          | CNCF                   | 0.2 async APIs in-progress                                                                         |
+| Kubernetes         | [SpinKube](https://www.spinkube.dev/)                                | 0.2          | CNCF                   |                                                                                                    |
+| Kubernetes         | [WasmCloud](https://wasmcloud.com/)                                  | 0.2          | CNCF                   |                                                                                                    |
+| MCP Server         | [WasMCP](https://github.com/wasmcp/wasmcp)                           | 0.2          | WasMCP                 |                                                                                                    |
+| MCP Server         | [Wassette](https://github.com/microsoft/wassette)                    | 0.2          | Microsoft              |                                                                                                    |
+| Node.js + Web      | [Jco](https://github.com/bytecodealliance/jco)                       | 0.2 + 0.3    | Bytecode Alliance      | 0.3 support in-progress                                                                            |
+| Rust Library       | [Wasmtime crate](https://crates.io/crates/wasmtime)                  | 0.2 + 0.3    | Bytecode Alliance      | 0.3 support in-progress                                                                            |
+| Web Framework      | [Leptos](https://leptos.dev)                                         | 0.2          | Leptos                 | [Plugin system](https://benw.is/posts/plugins-with-rust-and-wasi)                                  |
 
 ### Registries
 
@@ -146,10 +145,16 @@ Wasm Components can be uploaded to any [OCI v1.1]-compatible registry, using the
 
 ### Libraries
 
-- [fetch-rs](https://github.com/microsoft/wassette/tree/main/examples/fetch-rs) ([package](https://github.com/microsoft/wassette/pkgs/container/fetch-rs)): Shows how to fetch content from a URL in Rust.
-- [eval-py](https://github.com/microsoft/wassette/tree/main/examples/eval-py) ([package](https://github.com/microsoft/wassette/pkgs/container/eval-py)): Shows how to dynamically evaluate a Python expression.
+- [fetch-rs](https://github.com/microsoft/wassette/tree/main/examples/fetch-rs) ([package](https://github.com/microsoft/wassette/pkgs/container/fetch-rs)): Fetch content from a URL.
+- [eval-py](https://github.com/microsoft/wassette/tree/main/examples/eval-py) ([package](https://github.com/microsoft/wassette/pkgs/container/eval-py)): Dynamically evaluate a Python expression.
+- [filesystem-rs](https://github.com/microsoft/wassette/tree/main/examples/filesystem-rs) ([package](https://github.com/microsoft/wassette/pkgs/container/filesystem-rs)): Access the filesystem.
+- [get-weather-js](https://github.com/microsoft/wassette/tree/main/examples/get-weather-js) ([package](https://github.com/microsoft/wassette/pkgs/container/get-weather-js)): Get the weather for a specific location.
+- [gomodule-go](https://github.com/microsoft/wassette/tree/main/examples/gomodule-go) ([package](https://github.com/microsoft/wassette/pkgs/container/gomodule-go)): Look up Go module information by name.
+- [timeserver-js](https://github.com/microsoft/wassette/tree/main/examples/timeserver-js) ([package](https://github.com/microsoft/wassette/pkgs/container/timeserver-js)): Get the current time.
 
 ### Interfaces
+
+_Interfaces_ in Wasm are defined using WebAssembly Interface Types, or WIT for short. This is a 
 
 - [`wasi:io`](https://github.com/WebAssembly/wasi-io) ([package](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Fio)): Standard interfaces for I/O stream abstractions. 
 - [`wasi:clocks`](https://github.com/WebAssembly/wasi-clocks) ([package](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Fclocks)): Standard interfaces for reading the current time and measuring elapsed time.
@@ -157,7 +162,7 @@ Wasm Components can be uploaded to any [OCI v1.1]-compatible registry, using the
 - [`wasi:filesystem`](https://github.com/WebAssembly/wasi-filesystem) ([package](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Ffilesystem)): Standard interfacing for interacting with filesystems.
 - [`wasi:sockets`](https://github.com/WebAssembly/wasi-sockets) ([package](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Fsockets)):  Standard interfaces for TCP, UDP, and domain name lookup.
 - [`wasi:cli`](https://github.com/WebAssembly/wasi-cli) ([package](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Fcli)): Standard interfaces for Command-Line environments.
-- [`wasi:i2c`](https://github.com/WebAssembly/wasi-i2c): provides an interface that Wasm Components can use to read and write data over an I2C connection.
+- [`wasi:i2c`](https://github.com/WebAssembly/wasi-i2c): Standard interfaces for reading and writing data over an I2C connection.
 - [`wasmcp:mcp`](https://github.com/wasmcp/wasmcp/tree/main/wit) ([package](https://github.com/wasmcp/wasmcp/pkgs/container/mcp)): A WIT representation of the MCP specification.
 
 ## Resources
