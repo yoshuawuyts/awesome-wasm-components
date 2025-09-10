@@ -2,9 +2,6 @@
 
 A curated list of WebAssembly Component tooling and ready-to-use components.
 
-> [!NOTE]
-> There is a lot of work happening on Wasm Components right now, and I *know* I’m forgetting to include a lot of helpful projects, resources, and links.
-
 - [Tools](#tools)
 	- [Programming Language Support](#programming-language-support)
 	- [Bindings Generators](#bindings-generators)
@@ -19,19 +16,19 @@ A curated list of WebAssembly Component tooling and ready-to-use components.
 
 ## What are Wasm Components?
 
-WebAssembly (Wasm) Components are a typed package format that packages core Wasm Instructions into typed libraries and binaries. 
+WebAssembly (Wasm) Components are a typed package format that packages core Wasm Instructions into typed libraries and binaries. Wasm Components are also used by the Wasm System Interface (WASI) to create standard interfaces for various environments.
 
 Without a standard package format every language, toolchain, and platform has to define their own way of packaging up Wasm instructions. WebAssembly Components standardize this, enabling tools, languages, and platforms to all natively interoperate with each other.
 
 Wasm Components follow a structure that is very similar to other
 platforms, here is how they compare:
 
-|                                   | WebAssembly                          | Linux                             | Windows               | macOS                                      |
-| --------------------------------- | ------------------------------------ | --------------------------------- | --------------------- | ------------------------------------------ |
-| **Instruction Format**            | [Core Wasm]                          | x86, ARM, etc.                    | x86 or ARM            | ARM                                        |
-| **Container Format**              | [Wasm Components]                    | [ELF]                             | [PE]                  | [Mach-O]                                   |
+|                                   | WebAssembly                          | Linux                             | Windows                           | macOS                                      |
+| --------------------------------- | ------------------------------------ | --------------------------------- | --------------------------------- | ------------------------------------------ |
+| **Instruction Format**            | [Core Wasm]                          | x86, ARM, etc.                    | x86 or ARM                        | ARM                                        |
+| **Container Format**              | [Wasm Components]                    | [ELF]                             | [PE]                              | [Mach-O]                                   |
 | **Interface Definition Language** | [Wasm Interface Types][WIT] (WIT)    | C header files                    | [Windows Metadata][WINMD] (WinMD) | (Objective-)C header files + Swift Modules |
-| **System Interfaces**             | [Wasm System Interface][WASI] (WASI) | [POSIX] + [Linux User-Space APIs] | [Win32] + [UWP]       | [POSIX] + Darwin Syscalls                  |
+| **System Interfaces**             | [Wasm System Interface][WASI] (WASI) | [POSIX] + [Linux User-Space APIs] | [Win32] + [UWP]                   | [POSIX] + Darwin Syscalls                  |
 
 [Core Wasm]: https://webassembly.github.io/spec/core/
 [ELF]: https://en.wikipedia.org/wiki/Executable_and_Linkable_Format
@@ -47,6 +44,13 @@ platforms, here is how they compare:
 [Win32]: https://en.wikipedia.org/wiki/Windows_API
 [WINMD]: https://learn.microsoft.com/en-us/uwp/winrt-cref/winmd-files
 
+> [!NOTE]
+> WASI 0.1 was released in late 2019 and was exclusively designed for UNIX-like environments. That meant that all the work put into WASI couldn't be reused for the web and other environments. Wasm Components were released in early 2023 together with WASI 0.2, solving the limitations of WASI 0.1.
+> 
+> WASI 0.3 is planned for the end of 2025, using the newly added native async
+> support in Wasm Components. This will enable components with async interfaces
+> to directly link to each other. This is a relatively small, but powerful, improvement of WASI 0.2.
+ 
 ## Tools
 
 ### Programming Language Support
@@ -59,7 +63,7 @@ These languages can be compiled to Wasm Components. Some languages have first-pa
 | C#                      | [`componentize-dotnet`](https://github.com/bytecodealliance/componentize-dotnet)                       | 0.2          | Bytecode Alliance |                                                                                                                                                                                                     |
 | Go                      | [`go-modules`](https://github.com/bytecodealliance/go-modules)                                         | 0.2          | Bytecode Alliance |                                                                                                                                                                                                     |
 | Java                    | [`graal`](https://github.com/oracle/graal)                                                             | -            | Oracle            | Planned - [Tracking Issue](https://github.com/oracle/graal/issues/9762), [Roadmap](https://github.com/orgs/oracle/projects/21/views/1)                                                              |
-| JavaScript + TypeScript | [`jco`](https://github.com/bytecodealliance/jco)                                                       | 0.2          | Bytecode Alliance |                                                                                                                                                                                                     |
+| JavaScript and TypeScript | [`jco`](https://github.com/bytecodealliance/jco)                                                       | 0.2          | Bytecode Alliance |                                                                                                                                                                                                     |
 | Python                  | [`componentize-py`](https://github.com/bytecodealliance/componentize-py)                               | 0.2          | Bytecode Alliance |                                                                                                                                                                                                     |
 | Python                  | [`cpython`](https://snarky.ca/state-of-wasi-support-for-cpython-march-2024/)                           | 0.2          | Python            | In-progress                                                                                                                                                                                         |
 | Ruby                    | [`ruby.wasm`](https://github.com/ruby/ruby.wasm)                                                       | 0.2          | Ruby              | In-progress                                                                                                                                                                                         |
@@ -77,7 +81,7 @@ bindings generators that can generate those calls for you.
 | -------------------- | -------------------- | ------------------------------------------------------------------------------------------------- |
 | Wasm Interface Types | C and C++            | [wit-bindgen c](https://github.com/bytecodealliance/wit-bindgen/tree/main/crates/c)               |
 | Wasm Interface Types | C#                   | [wit-bindgen csharp](https://github.com/bytecodealliance/wit-bindgen/tree/main/crates/csharp)     |
-| Wasm Interface Types | Json Schema          | [component2json](https://github.com/microsoft/wassette/tree/main/crates/component2json)           |
+| Wasm Interface Types | JSON Schema          | [component2json](https://github.com/microsoft/wassette/tree/main/crates/component2json)           |
 | Wasm Interface Types | Markdown             | [wit-bindgen markdown](https://github.com/bytecodealliance/wit-bindgen/tree/main/crates/markdown) |
 | Wasm Interface Types | Moonbit              | [wit-bindgen moonbit](https://github.com/bytecodealliance/wit-bindgen/tree/main/crates/moonbit)   |
 | Wasm Interface Types | Rust                 | [wit-bindgen rust](https://github.com/bytecodealliance/wit-bindgen/tree/main/crates/guest-rust)   |
@@ -125,45 +129,62 @@ Wasm Components can be uploaded to any [OCI v1.1]-compatible registry, using the
 
 > [!TIP]
 > Pulling Wasm Components from OCI Registries
-> To download a `.wasm` application, library, or interface from an OCI registry we want to use the [`wkg` command line tool](https://github.com/bytecodealliance/wasm-pkg-tools). We can install it via `cargo`:
+> To download a `.wasm` application, library, or interface from an OCI registry we want to use [wkg][wkg].
+> With it we can download Wasm Components from OCI URLs:
 > 
 > ```bash
-> $ cargo install wkg
-> ```
-> 
-> With `wkg` installed, we can point it at any OCI URL to fetch a package and get the `.wasm`. Here is an example to download a basic HTTP server:
-> 
-> ```bash
-> $ wkg oci pull ghcr.io/bytecodealliance/sample-wasi-http-rust/sample-wasi-http-rust:latest
+> $ wkg oci pull ghcr.io/yoshuawuyts/fetch:latest -o fetch.wasm
 > ```
 
 ## Components
 ### Applications
 
-- [sample-wasi-http-rust](https://github.com/bytecodealliance/sample-wasi-http-rust) ([package](https://github.com/bytecodealliance/sample-wasi-http-rust/pkgs/container/sample-wasi-http-rust%2Fsample-wasi-http-rust)): A sample HTTP server written in Rust.
-- [sample-wasi-http-js](https://github.com/bytecodealliance/sample-wasi-http-js): A sample HTTP server written in JavaScript.
+Wasm Components don't really distinguish between *libraries* and *applications*;
+Components are always sets of function imports and exports. Still though, there
+are components which don't define their own typed interfaces and instead
+directly map to common environments such as `wasi:http` or `wasi:cli`. These
+components feel very much "binary-shaped" and tend to be easy to run.
+
+- [sample-wasi-http-rust](https://github.com/bytecodealliance/sample-wasi-http-rust) ([*package*](https://github.com/bytecodealliance/sample-wasi-http-rust/pkgs/container/sample-wasi-http-rust%2Fsample-wasi-http-rust)): A sample `wasi:http` server written in Rust.
+- [sample-wasi-http-js](https://github.com/bytecodealliance/sample-wasi-http-js): A sample `wasi:http` server written in JavaScript.
 
 ### Libraries
 
-- [fetch-rs](https://github.com/microsoft/wassette/tree/main/examples/fetch-rs) ([package](https://github.com/microsoft/wassette/pkgs/container/fetch-rs)): Fetch content from a URL.
-- [eval-py](https://github.com/microsoft/wassette/tree/main/examples/eval-py) ([package](https://github.com/microsoft/wassette/pkgs/container/eval-py)): Dynamically evaluate a Python expression.
-- [filesystem-rs](https://github.com/microsoft/wassette/tree/main/examples/filesystem-rs) ([package](https://github.com/microsoft/wassette/pkgs/container/filesystem-rs)): Access the filesystem.
-- [get-weather-js](https://github.com/microsoft/wassette/tree/main/examples/get-weather-js) ([package](https://github.com/microsoft/wassette/pkgs/container/get-weather-js)): Get the weather for a specific location.
-- [gomodule-go](https://github.com/microsoft/wassette/tree/main/examples/gomodule-go) ([package](https://github.com/microsoft/wassette/pkgs/container/gomodule-go)): Look up Go module information by name.
-- [timeserver-js](https://github.com/microsoft/wassette/tree/main/examples/timeserver-js) ([package](https://github.com/microsoft/wassette/pkgs/container/timeserver-js)): Get the current time.
+Wasm Components provide fully typed interfaces, which can be linked to from any language using [Bindings Generators](#bindings-generators). This makes Wasm Components a particularly portable way to package up libraries. Libraries can also be layered and implemented in terms of one another. This makes it possible to bring a large amount of complex functionality out of the runtime, and into components.
+
+- [fetch-rs](https://github.com/microsoft/wassette/tree/main/examples/fetch-rs) ([*package*](https://github.com/microsoft/wassette/pkgs/container/fetch-rs)): Fetch content from a URL.
+- [eval-py](https://github.com/microsoft/wassette/tree/main/examples/eval-py) ([*package*](https://github.com/microsoft/wassette/pkgs/container/eval-py)): Dynamically evaluate a Python expression.
+- [filesystem-rs](https://github.com/microsoft/wassette/tree/main/examples/filesystem-rs) ([*package*](https://github.com/microsoft/wassette/pkgs/container/filesystem-rs)): Access the filesystem.
+- [get-weather-js](https://github.com/microsoft/wassette/tree/main/examples/get-weather-js) ([*package*](https://github.com/microsoft/wassette/pkgs/container/get-weather-js)): Get the weather for a specific location.
+- [gomodule-go](https://github.com/microsoft/wassette/tree/main/examples/gomodule-go) ([*package*](https://github.com/microsoft/wassette/pkgs/container/gomodule-go)): Look up Go module information by name.
+- [timeserver-js](https://github.com/microsoft/wassette/tree/main/examples/timeserver-js) ([*package*](https://github.com/microsoft/wassette/pkgs/container/timeserver-js)): Get the current time.
 
 ### Interfaces
 
-_Interfaces_ in Wasm are defined using WebAssembly Interface Types, or WIT for short. This is a 
+_Interfaces_ in Wasm are defined using WebAssembly Interface Types, or WIT for short. There are the standard WASI-based interfaces which are developed as part of the Wasm SG in the W3C. But anyone can define their own `.wit` interfaces and package them up.
 
-- [`wasi:io`](https://github.com/WebAssembly/wasi-io) ([package](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Fio)): Standard interfaces for I/O stream abstractions. 
-- [`wasi:clocks`](https://github.com/WebAssembly/wasi-clocks) ([package](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Fclocks)): Standard interfaces for reading the current time and measuring elapsed time.
-- [`wasi:random`](https://github.com/WebAssembly/wasi-random) ([package](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Frandom)): Standard interfaces for obtaining pseudo-random data.
-- [`wasi:filesystem`](https://github.com/WebAssembly/wasi-filesystem) ([package](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Ffilesystem)): Standard interfacing for interacting with filesystems.
-- [`wasi:sockets`](https://github.com/WebAssembly/wasi-sockets) ([package](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Fsockets)):  Standard interfaces for TCP, UDP, and domain name lookup.
-- [`wasi:cli`](https://github.com/WebAssembly/wasi-cli) ([package](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Fcli)): Standard interfaces for Command-Line environments.
-- [`wasi:i2c`](https://github.com/WebAssembly/wasi-i2c): Standard interfaces for reading and writing data over an I2C connection.
-- [`wasmcp:mcp`](https://github.com/wasmcp/wasmcp/tree/main/wit) ([package](https://github.com/wasmcp/wasmcp/pkgs/container/mcp)): A WIT representation of the MCP specification.
+- [wasi:io](https://github.com/WebAssembly/wasi-io) ([*package*](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Fio)): Standard interfaces for I/O stream abstractions. 
+- [wasi:clocks](https://github.com/WebAssembly/wasi-clocks) ([*package*](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Fclocks)): Standard interfaces for reading the current time and measuring elapsed time.
+- [wasi:random](https://github.com/WebAssembly/wasi-random) ([*package*](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Frandom)): Standard interfaces for obtaining pseudo-random data.
+- [wasi:filesystem](https://github.com/WebAssembly/wasi-filesystem) ([*package*](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Ffilesystem)): Standard interfacing for interacting with filesystems.
+- [wasi:sockets](https://github.com/WebAssembly/wasi-sockets) ([*package*](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Fsockets)):  Standard interfaces for TCP, UDP, and domain name lookup.
+- [wasi:cli](https://github.com/WebAssembly/wasi-cli) ([*package*](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Fcli)): Standard interfaces for Command-Line environments.
+- [wasi:i2c](https://github.com/WebAssembly/wasi-i2c): Standard interfaces for reading and writing data over an I2C connection.
+- [wasmcp:mcp](https://github.com/wasmcp/wasmcp/tree/main/wit) ([*package*](https://github.com/wasmcp/wasmcp/pkgs/container/mcp)): A WIT representation of the MCP specification.
+
+> [!TIP]
+> To convert a directory of `.wit` files to a `.wasm` file to publish it on a registry you can use [wkg]:
+> 
+> ```bash
+> $ wkg wit build -d wit/ -o my-interface.wasm
+> ```
+>
+> To get the interfaces from a `.wasm` and store it as a `.wit` you can use [wasm-tools]:
+>
+> ```bash
+> $ wasm-tools component wit my-interface.wasm -o my-interface.wit
+> ```
+
 
 ## Resources
 
@@ -174,3 +195,6 @@ _Interfaces_ in Wasm are defined using WebAssembly Interface Types, or WIT for s
 ## License
 
 Apache-2.0 with LLVM Exception
+
+[wasm-tools]: https://github.com/bytecodealliance/wasm-tools
+[wkg]: https://github.com/bytecodealliance/wasm-pkg-tools
