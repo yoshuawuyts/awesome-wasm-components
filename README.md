@@ -124,7 +124,8 @@ Wasm Components can be uploaded to any [OCI v1.1]-compatible registry, using the
 - [GitHub Packages](https://docs.github.com/en/packages)
 - [Google Cloud Artifact Registry](https://cloud.google.com/artifact-registry/docs)
 
-> [!HINT] Pulling Wasm Components from OCI Registries
+> [!TIP]
+> Pulling Wasm Components from OCI Registries
 > To download a `.wasm` application, library, or interface from an OCI registry we want to use the [`wkg` command line tool](https://github.com/bytecodealliance/wasm-pkg-tools). We can install it via `cargo`:
 > 
 > ```bash
