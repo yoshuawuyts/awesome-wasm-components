@@ -2,17 +2,17 @@
 
 A curated list of WebAssembly Component tooling and ready-to-use components.
 
-- [[#What are Wasm Components?|What are Wasm Components?]]
-- [[#Tools|Tools]]
-	- [[#Tools#Programming Languages|Programming Languages]]
-	- [[#Tools#Host Runtimes|Host Runtimes]]
-	- [[#Tools#Registries|Registries]]
-- [[#Components|Components]]
-	- [[#Components#Applications|Applications]]
-	- [[#Components#Libraries|Libraries]]
-	- [[#Components#Interfaces|Interfaces]]
-- [[#Resources|Resources]]
-	- [[#Resources#Tutorials|Tutorials]]
+- [Tools](#tools)
+	- [Programming Language Support](#programming-language-support)
+	- [Bindings Generators](#bindings-generators)
+	- [Host Runtimes](#host-runtimes)
+	- [Registries](#registries)
+- [Components](#components)
+	- [Applications](#applications)
+	- [Libraries](#libraries)
+	- [Interfaces](#interfaces)
+- [Resources](#resources)
+	- [Tutorials](#tutorials)
 
 > [!Note] Under Development
 > There is a lot of work happening on Wasm Components right now, and I *know* I’m forgetting to include a lot of helpful projects, resources, and links.
