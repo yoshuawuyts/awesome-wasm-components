@@ -23,12 +23,12 @@ Without a standard package format every language, toolchain, and platform has to
 Wasm Components follow a structure that is very similar to other
 platforms, here is how they compare:
 
-|                                   | WebAssembly                          | Linux                             | Windows                           | macOS                                      |
-| --------------------------------- | ------------------------------------ | --------------------------------- | --------------------------------- | ------------------------------------------ |
-| **Instruction Format**            | [Core Wasm]                          | x86, ARM, etc.                    | x86 or ARM                        | ARM                                        |
-| **Container Format**              | [Wasm Components]                    | [ELF]                             | [PE]                              | [Mach-O]                                   |
-| **Interface Definition Language** | [Wasm Interface Types][WIT] (WIT)    | C header files                    | [Windows Metadata][WINMD] (WinMD) | (Objective-)C header files + Swift Modules |
-| **System Interfaces**             | [Wasm System Interface][WASI] (WASI) | [POSIX] + [Linux User-Space APIs] | [Win32] + [UWP]                   | [POSIX] + Darwin Syscalls                  |
+|                                   | WebAssembly                          | Linux                                       | Windows                           | macOS                                      |
+| --------------------------------- | ------------------------------------ | ------------------------------------------- | --------------------------------- | ------------------------------------------ |
+| **Instruction Format**            | [Core Wasm]                          | x86, ARM, etc.                              | x86, ARM                        | ARM                                        |
+| **Container Format**              | [Wasm Components]                    | [Executable and Linkable Format][ELF] (ELF) | [Portable Executable][PE] (PE)    | [Mach-O]                                   |
+| **Interface Definition Language** | [Wasm Interface Types][WIT] (WIT)    | C header files                              | [Windows Metadata][WINMD] (WinMD) | (Objective-)C header files + Mach IDL + Swift Modules |
+| **System Interfaces**             | [Wasm System Interface][WASI] (WASI) | [POSIX] + [Linux User-Space APIs]           | [Win32] + [UWP]                   | [POSIX] + Darwin Syscalls                  |
 
 [Core Wasm]: https://webassembly.github.io/spec/core/
 [ELF]: https://en.wikipedia.org/wiki/Executable_and_Linkable_Format
@@ -45,11 +45,12 @@ platforms, here is how they compare:
 [WINMD]: https://learn.microsoft.com/en-us/uwp/winrt-cref/winmd-files
 
 > [!NOTE]
-> WASI 0.1 was released in late 2019 and was exclusively designed for UNIX-like environments. That meant that all the work put into WASI couldn't be reused for the web and other environments. Wasm Components were released in early 2023 together with WASI 0.2, solving the limitations of WASI 0.1.
+> WASI 0.1 was released in late 2019 and was exclusively designed for UNIX-like environments. That meant that all the work put into WASI couldn't be reused for the web and other environments. Wasm Components were released in early 2023 together with WASI 0.2, which is entirely portable across environments.
 > 
 > WASI 0.3 is planned for the end of 2025, using the newly added native async
 > support in Wasm Components. This will enable components with async interfaces
-> to directly link to each other. This is a relatively small, but powerful, improvement of WASI 0.2.
+> to directly link to each other. WASI 0.2 was a big departure from WASI 0.1.
+> WASI 0.3 will be a relatively small iteration of WASI 0.2.
  
 ## Tools
 
@@ -57,18 +58,18 @@ platforms, here is how they compare:
 
 These languages can be compiled to Wasm Components. Some languages have first-party support for Wasm Components, while other languages rely on externally maintained tools.
 
-| Language                | Name                                                                                                   | WASI Version | Maintained By     | Notes                                                                                                                                                                                               |
-| ----------------------- | ------------------------------------------------------------------------------------------------------ | ------------ | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| C and C++               | [`wasi-sdk`](https://github.com/WebAssembly/wasi-sdk)                                                  | 0.2 + 0.3    | W3C Wasm CG       | 0.3 is in-progress                                                                                                                                                                                  |
-| C#                      | [`componentize-dotnet`](https://github.com/bytecodealliance/componentize-dotnet)                       | 0.2          | Bytecode Alliance |                                                                                                                                                                                                     |
-| Go                      | [`go-modules`](https://github.com/bytecodealliance/go-modules)                                         | 0.2          | Bytecode Alliance |                                                                                                                                                                                                     |
-| Java                    | [`graal`](https://github.com/oracle/graal)                                                             | -            | Oracle            | Planned - [Tracking Issue](https://github.com/oracle/graal/issues/9762), [Roadmap](https://github.com/orgs/oracle/projects/21/views/1)                                                              |
+| Language                  | Name                                                                                                   | WASI Version | Maintained By     | Notes                                                                                                                                                                                               |
+| ------------------------- | ------------------------------------------------------------------------------------------------------ | ------------ | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| C and C++                 | [`wasi-sdk`](https://github.com/WebAssembly/wasi-sdk)                                                  | 0.2 + 0.3    | W3C Wasm CG       | 0.3 is in-progress                                                                                                                                                                                  |
+| C#                        | [`componentize-dotnet`](https://github.com/bytecodealliance/componentize-dotnet)                       | 0.2          | Bytecode Alliance |                                                                                                                                                                                                     |
+| Go                        | [`go-modules`](https://github.com/bytecodealliance/go-modules)                                         | 0.2          | Bytecode Alliance |                                                                                                                                                                                                     |
+| Java                      | [`graal`](https://github.com/oracle/graal)                                                             | -            | Oracle            | Planned - [Tracking Issue](https://github.com/oracle/graal/issues/9762), [Roadmap](https://github.com/orgs/oracle/projects/21/views/1)                                                              |
 | JavaScript and TypeScript | [`jco`](https://github.com/bytecodealliance/jco)                                                       | 0.2          | Bytecode Alliance |                                                                                                                                                                                                     |
-| Python                  | [`componentize-py`](https://github.com/bytecodealliance/componentize-py)                               | 0.2          | Bytecode Alliance |                                                                                                                                                                                                     |
-| Python                  | [`cpython`](https://snarky.ca/state-of-wasi-support-for-cpython-march-2024/)                           | 0.2          | Python            | In-progress                                                                                                                                                                                         |
-| Ruby                    | [`ruby.wasm`](https://github.com/ruby/ruby.wasm)                                                       | 0.2          | Ruby              | In-progress                                                                                                                                                                                         |
-| Rust                    | [`wasm32-wasip2`](https://doc.rust-lang.org/rustc/platform-support/wasm32-wasip2.html) compiler target | 0.2 + 0.3    | Rust Project      | [0.2 Introduction](https://blog.rust-lang.org/2024/04/09/updates-to-rusts-wasi-targets/), [0.2 Stabilization](https://blog.rust-lang.org/2024/04/09/updates-to-rusts-wasi-targets/), 0.3 is planned |
-| Swift                   | [Swift](https://www.swift.org/)                                                                        | 0.2          | Swift             | Planned - [Roadmap Accepted](https://forums.swift.org/t/accepted-vision-a-vision-for-webassembly-support-in-swift/80332)                                                                            |
+| Python                    | [`componentize-py`](https://github.com/bytecodealliance/componentize-py)                               | 0.2          | Bytecode Alliance |                                                                                                                                                                                                     |
+| Python                    | [`cpython`](https://snarky.ca/state-of-wasi-support-for-cpython-march-2024/)                           | 0.2          | Python            | In-progress                                                                                                                                                                                         |
+| Ruby                      | [`ruby.wasm`](https://github.com/ruby/ruby.wasm)                                                       | 0.2          | Ruby              | In-progress                                                                                                                                                                                         |
+| Rust                      | [`wasm32-wasip2`](https://doc.rust-lang.org/rustc/platform-support/wasm32-wasip2.html) compiler target | 0.2 + 0.3    | Rust Project      | [0.2 Introduction](https://blog.rust-lang.org/2024/04/09/updates-to-rusts-wasi-targets/), [0.2 Stabilization](https://blog.rust-lang.org/2024/04/09/updates-to-rusts-wasi-targets/), 0.3 is planned |
+| Swift                     | [Swift](https://www.swift.org/)                                                                        | 0.2          | Swift             | Planned - [Roadmap Accepted](https://forums.swift.org/t/accepted-vision-a-vision-for-webassembly-support-in-swift/80332)                                                                            |
 
 ### Bindings Generators
 
@@ -158,6 +159,7 @@ Wasm Components provide fully typed interfaces, which can be linked to from any 
 - [get-weather-js](https://github.com/microsoft/wassette/tree/main/examples/get-weather-js) ([*package*](https://github.com/microsoft/wassette/pkgs/container/get-weather-js)): Get the weather for a specific location.
 - [gomodule-go](https://github.com/microsoft/wassette/tree/main/examples/gomodule-go) ([*package*](https://github.com/microsoft/wassette/pkgs/container/gomodule-go)): Look up Go module information by name.
 - [timeserver-js](https://github.com/microsoft/wassette/tree/main/examples/timeserver-js) ([*package*](https://github.com/microsoft/wassette/pkgs/container/timeserver-js)): Get the current time.
+- [qr-code-webassembly](https://github.com/attackordie/qr-code-webassembly): Generate a QR code from a URL.
 
 ### Interfaces
 
@@ -167,10 +169,12 @@ _Interfaces_ in Wasm are defined using WebAssembly Interface Types, or WIT for s
 - [wasi:clocks](https://github.com/WebAssembly/wasi-clocks) ([*package*](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Fclocks)): Standard interfaces for reading the current time and measuring elapsed time.
 - [wasi:random](https://github.com/WebAssembly/wasi-random) ([*package*](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Frandom)): Standard interfaces for obtaining pseudo-random data.
 - [wasi:filesystem](https://github.com/WebAssembly/wasi-filesystem) ([*package*](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Ffilesystem)): Standard interfacing for interacting with filesystems.
-- [wasi:sockets](https://github.com/WebAssembly/wasi-sockets) ([*package*](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Fsockets)):  Standard interfaces for TCP, UDP, and domain name lookup.
+- [wasi:sockets](https://github.com/WebAssembly/wasi-sockets) ([*package*](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Fsockets)): Standard interfaces for TCP, UDP, and domain name lookup.
 - [wasi:cli](https://github.com/WebAssembly/wasi-cli) ([*package*](https://github.com/WebAssembly/WASI/pkgs/container/wasi%2Fcli)): Standard interfaces for Command-Line environments.
-- [wasi:i2c](https://github.com/WebAssembly/wasi-i2c): Standard interfaces for reading and writing data over an I2C connection.
+- [wasi:i2c](https://github.com/WebAssembly/wasi-i2c): Standard interfaces for reading and writing data on embedded devices over an I²C connection.
 - [wasmcp:mcp](https://github.com/wasmcp/wasmcp/tree/main/wit) ([*package*](https://github.com/wasmcp/wasmcp/pkgs/container/mcp)): A WIT representation of the MCP specification.
+- [zed:extension](https://github.com/zed-industries/zed/tree/6ae83b474079263273d512b68e4bf2b9b390a17d/crates/extension_api/wit/since_v0.6.0): The extension interface for the [Zed](https://zed.dev) editor. Includes support for interacting with [LSP] and [DAP].
+- [browser.wit](https://github.com/MendyBerger/browser.wit): An automatic translation of the browser's Web APIs into WIT.
 
 > [!TIP]
 > To convert a directory of `.wit` files to a `.wasm` file to publish it on a registry you can use [wkg]:
@@ -185,7 +189,6 @@ _Interfaces_ in Wasm are defined using WebAssembly Interface Types, or WIT for s
 > $ wasm-tools component wit my-interface.wasm -o my-interface.wit
 > ```
 
-
 ## Resources
 
 ### Tutorials
@@ -198,3 +201,5 @@ Apache-2.0 with LLVM Exception
 
 [wasm-tools]: https://github.com/bytecodealliance/wasm-tools
 [wkg]: https://github.com/bytecodealliance/wasm-pkg-tools
+[LSP]: https://microsoft.github.io/language-server-protocol/
+[DAP]: https://microsoft.github.io/debug-adapter-protocol/
