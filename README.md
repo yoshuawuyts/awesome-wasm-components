@@ -176,6 +176,7 @@ _Interfaces_ in Wasm are defined using WebAssembly Interface Types, or WIT for s
 - [wasmcp:mcp](https://github.com/wasmcp/wasmcp/tree/main/wit) ([*package*](https://github.com/wasmcp/wasmcp/pkgs/container/mcp)): A WIT representation of the MCP specification.
 - [zed:extension](https://github.com/zed-industries/zed/tree/6ae83b474079263273d512b68e4bf2b9b390a17d/crates/extension_api/wit/since_v0.6.0): The extension interface for the [Zed](https://zed.dev) editor. Includes support for interacting with [LSP] and [DAP].
 - [browser.wit](https://github.com/MendyBerger/browser.wit): An automatic translation of the browser's Web APIs into WIT.
+- [grafbase:sdk](https://github.com/grafbase/grafbase/tree/32fdf617b5040fa6640f5d89c59aca689e8ea140/crates/grafbase-sdk/wit/since_0_21_0): Extensions to the Grafbase GraphQL Gateway.
 
 > [!TIP]
 > To convert a directory of `.wit` files to a `.wasm` file to publish it on a registry you can use [wkg]:
