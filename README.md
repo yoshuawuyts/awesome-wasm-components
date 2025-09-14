@@ -104,7 +104,6 @@ Host runtimes can take Wasm Components and execute them. Runtimes can either be 
 | Edge Compute       | [Fastly Edge Compute](https://www.fastly.com/products/edge-compute)  | 0.2          | Fastly                 |                                                                                                    |
 | Editor             | [VS Code](https://vscode.dev)                                        | 0.2          | Microsoft              | [Plugin system](https://code.visualstudio.com/blogs/2024/05/08/wasm)                               |
 | Editor             | [Zed](https://zed.dev)                                               | 0.2          | Zed Industries         | [Plugin system](https://github.com/zed-industries/zed/tree/main/crates/extension_api)              |
-| Game Backend       | [SpacetimeDB](https://spacetimedb.com/)                              | 0.2          | Clockwork Laboratories |                                                                                                    |
 | Go Library         | [Gravity](https://github.com/arcjet/gravity)                         | 0.2          | Arcjet                 | In-progress                                                                                        |
 | Serverless Runtime | [Spin](https://spinframework.dev/)                                   | 0.2          | CNCF                   |                                                                                                    |
 | Hypervisor Guest   | [Hyperlight Wasm](https://github.com/hyperlight-dev/hyperlight-wasm) | 0.2          | CNCF                   | 0.2 async APIs in-progress                                                                         |
@@ -115,6 +114,7 @@ Host runtimes can take Wasm Components and execute them. Runtimes can either be 
 | Node.js + Web      | [Jco](https://github.com/bytecodealliance/jco)                       | 0.2 + 0.3    | Bytecode Alliance      | 0.3 support in-progress                                                                            |
 | Rust Library       | [Wasmtime crate](https://crates.io/crates/wasmtime)                  | 0.2 + 0.3    | Bytecode Alliance      | 0.3 support in-progress                                                                            |
 | Web Framework      | [Leptos](https://leptos.dev)                                         | 0.2          | Leptos                 | [Plugin system](https://benw.is/posts/plugins-with-rust-and-wasi)                                  |
+| GraphQL Platform   | [Grafbase](https://grafbase.com/extensions)                          | 0.2          | Grafbase               | [Plugin system](https://grafbase.com/docs/gateway/extensions#extension-implementation)             |
 
 ### Registries
 
