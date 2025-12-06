@@ -199,6 +199,7 @@ _Interfaces_ in Wasm are defined using WebAssembly Interface Types, or WIT for s
 ### Tutorials
 
 - [Building Native Plugin Systems with WebAssembly Components](https://tartanllama.xyz/posts/wasm-plugins/) by Sy Brand
+- [WASM Component Model in Raw WASM](https://gertvv.nl/posts/wasm-component-raw.html) by Gert van Valkenhoef
 
 ## License
 
